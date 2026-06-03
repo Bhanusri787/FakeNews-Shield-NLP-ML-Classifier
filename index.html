@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake News Shield - Advanced NLP & ML Classifier Dashboard</title>
+  <meta name="description" content="An interactive web application detecting fake news using client-side Natural Language Processing (NLP) and Machine Learning classifiers including Naive Bayes, Logistic Regression, and Passive Aggressive Classifiers.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">F</div>
+        <div class="brand-title">
+          <h1>FakeNews Shield</h1>
+          <span>NLP & ML Classifier</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <li class="nav-item active" id="nav-item-analyzer">
+          <button id="btn-nav-analyzer">
+            <svg viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            Text Analyzer
+          </button>
+        </li>
+        <li class="nav-item" id="nav-item-sandbox">
+          <button id="btn-nav-sandbox">
+            <svg viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+            </svg>
+            Model Sandbox
+          </button>
+        </li>
+        <li class="nav-item" id="nav-item-quiz">
+          <button id="btn-nav-quiz">
+            <svg viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Spot-the-Fake Quiz
+          </button>
+        </li>
+        <li class="nav-item" id="nav-item-learn">
+          <button id="btn-nav-learn">
+            <svg viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            Learning Center
+          </button>
+        </li>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>Core ML Engines: Ready</span>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- MAIN DISPLAY SPACE -->
+    <main class="main-viewport">
+      
+      <!-- VIEW 1: TEXT ANALYZER -->
+      <section id="panel-analyzer" class="view-panel active">
+        <div class="view-header">
+          <h2>News Credibility Analyzer</h2>
+          <p>Input a news article, press release, or headline to parse writing style, clickbait metrics, and evaluate reliability.</p>
+        </div>
+        
+        <div class="grid-2x1">
+          <!-- Left Column: Input Form -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span>Analyze New Text</span>
+              <div class="preset-selector">
+                <label for="select-preset">Demo Inputs:</label>
+                <select id="select-preset">
+                  <option value="empty">-- Select Preset Article --</option>
+                  <option value="preset-1">Fake: Miracle Diabetes Fruit Scam</option>
+                  <option value="preset-2">Real: James Webb Nebula Photo</option>
+                  <option value="preset-3">Fake: Bank ATM Shutdown Panic</option>
+                  <option value="preset-4">Real: European Central Bank Rates</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="input-panel">
+              <div class="textarea-container">
+                <textarea id="textarea-input" class="news-textarea" placeholder="Paste news article content or type text here (minimum 10 words for accurate results)..."></textarea>
+              </div>
+              <div class="textarea-actions">
+                <span class="char-counter" id="lbl-char-count">0 characters | 0 words</span>
+                <button id="btn-run-analysis" class="btn-primary">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                  </svg>
+                  Scan for Reliability
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Column: Initial / Diagnostic Results -->
+          <div class="results-panel">
+            <div class="glass-card">
+              <div class="card-title">Credibility Analysis</div>
+              <div class="credibility-gauge-container">
+                <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+                  <svg class="gauge-svg">
+                    <circle class="gauge-track" cx="90" cy="90" r="80"></circle>
+                    <circle id="gauge-credibility-fill" class="gauge-fill" cx="90" cy="90" r="80"></circle>
+                  </svg>
+                  <div class="gauge-content">
+                    <span id="lbl-credibility-score" class="gauge-value">--</span>
+                    <span class="gauge-label">Score</span>
+                  </div>
+                </div>
+                <div id="badge-verdict" class="verdict-tag" style="display: none;">Real News</div>
+              </div>
+            </div>
+
+            <!-- Stylometric & Bias scores -->
+            <div class="glass-card">
+              <div class="card-title">Linguistic Signatures</div>
+              <div class="feature-list">
+                
+                <div class="feature-item">
+                  <div class="feature-info">
+                    <span class="feature-name">Clickbait & Sensationalism</span>
+                    <span id="lbl-feat-clickbait" class="feature-value">0%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div id="bar-feat-clickbait" class="progress-bar-fill" style="background: var(--color-fake);"></div>
+                  </div>
+                </div>
+
+                <div class="feature-item">
+                  <div class="feature-info">
+                    <span class="feature-name">Subjectivity / Emotional Charge</span>
+                    <span id="lbl-feat-subjectivity" class="feature-value">0%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div id="bar-feat-subjectivity" class="progress-bar-fill" style="background: var(--color-secondary);"></div>
+                  </div>
+                </div>
+
+                <div class="feature-item">
+                  <div class="feature-info">
+                    <span class="feature-name">ALL CAPS Words Density</span>
+                    <span id="lbl-feat-caps" class="feature-value">0%</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div id="bar-feat-caps" class="progress-bar-fill" style="background: var(--color-warning);"></div>
+                  </div>
+                </div>
+
+                <div class="feature-item">
+                  <div class="feature-info">
+                    <span class="feature-name">Readability (Flesch-Kincaid)</span>
+                    <span id="lbl-feat-readability" class="feature-value">Grade 0</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div id="bar-feat-readability" class="progress-bar-fill" style="background: var(--color-teal);"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Detailed Classifier Breakdown & Red Flags Highlights -->
+        <div class="grid-2-col" style="margin-top: 28px;">
+          <!-- Model Predictions -->
+          <div class="glass-card">
+            <div class="card-title">Classifier Predictions (TF-IDF Enabled)</div>
+            <div class="algo-scores">
+              
+              <div class="algo-row">
+                <span class="algo-name">Multinomial Naive Bayes</span>
+                <span id="pred-nb" class="algo-prediction algo-pred-fake">Fake</span>
+                <span id="conf-nb" class="algo-confidence">0.0%</span>
+              </div>
+
+              <div class="algo-row">
+                <span class="algo-name">Logistic Regression (SGD)</span>
+                <span id="pred-lr" class="algo-prediction algo-pred-real">Real</span>
+                <span id="conf-lr" class="algo-confidence">0.0%</span>
+              </div>
+
+              <div class="algo-row">
+                <span class="algo-name">Passive Aggressive Classifier</span>
+                <span id="pred-pac" class="algo-prediction algo-pred-real">Real</span>
+                <span id="conf-pac" class="algo-confidence">0.0%</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Red Flags text highlighting -->
+          <div class="glass-card">
+            <div class="card-title">Trigger Phrase Highlight Map</div>
+            <div class="highlighted-text-container" id="container-highlighted-text">
+              <span class="text-muted">Enter text above and press "Scan" to highlight potential sensationalist tells, logical gaps, or biased expressions.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 2: MODEL TRAINING SANDBOX -->
+      <section id="panel-sandbox" class="view-panel">
+        <div class="view-header">
+          <h2>Machine Learning Training Sandbox</h2>
+          <p>Tweak hyperparameters, train models on local datasets, inspect coefficients, and watch models converge.</p>
+        </div>
+        
+        <div class="grid-2x1">
+          <!-- Sandbox Parameters -->
+          <div class="glass-card">
+            <div class="card-title">Model Hyperparameters</div>
+            
+            <div class="control-panel">
+              <div class="parameter-slider">
+                <div class="slider-header">
+                  <span>Selected Classifier Algorithm</span>
+                </div>
+                <select id="select-sandbox-algo" class="input-text" style="width: 100%;">
+                  <option value="logistic-regression">Logistic Regression (SGD)</option>
+                  <option value="passive-aggressive">Passive Aggressive Classifier (PAC)</option>
+                  <option value="naive-bayes">Multinomial Naive Bayes</option>
+                </select>
+              </div>
+
+              <!-- Hyperparameter controls -->
+              <div class="parameter-slider" id="container-hyper-epochs">
+                <div class="slider-header">
+                  <span>Training Epochs</span>
+                  <span id="lbl-val-epochs" class="slider-val">20</span>
+                </div>
+                <input type="range" id="slider-epochs" class="input-slider" min="5" max="100" step="5" value="20">
+              </div>
+
+              <div class="parameter-slider" id="container-hyper-lr">
+                <div class="slider-header">
+                  <span>Learning Rate (alpha)</span>
+                  <span id="lbl-val-lr" class="slider-val">0.1</span>
+                </div>
+                <input type="range" id="slider-lr" class="input-slider" min="0.01" max="1.0" step="0.05" value="0.1">
+              </div>
+
+              <div class="parameter-slider" id="container-hyper-reg">
+                <div class="slider-header">
+                  <span id="lbl-reg-title">L2 Regularization Coefficient (lambda)</span>
+                  <span id="lbl-val-reg" class="slider-val">0.01</span>
+                </div>
+                <input type="range" id="slider-reg" class="input-slider" min="0.001" max="0.5" step="0.005" value="0.01">
+              </div>
+
+              <div class="parameter-slider">
+                <div class="slider-header">
+                  <span>Train/Test Split Ratio</span>
+                  <span id="lbl-val-split" class="slider-val">75% / 25%</span>
+                </div>
+                <input type="range" id="slider-split" class="input-slider" min="50" max="90" step="5" value="75">
+              </div>
+
+              <button id="btn-train-sandbox" class="btn-primary" style="margin-top: 10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Execute Training Cycle
+              </button>
+            </div>
+          </div>
+          
+          <!-- Live Visualizations -->
+          <div class="sandbox-visualizer">
+            <div class="glass-card">
+              <div class="card-title">Training Convergence Curve</div>
+              <div class="chart-container">
+                <canvas id="chart-sandbox" class="chart-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Confusion Matrix and Metrics -->
+            <div class="grid-2-col" style="margin-bottom: 0;">
+              <div class="glass-card">
+                <div class="card-title" style="font-size: 1.1rem; margin-bottom: 8px;">Confusion Matrix</div>
+                <div class="matrix-container">
+                  <div class="matrix-axes">
+                    <span>Act. Real</span>
+                    <span>Act. Fake</span>
+                  </div>
+                  <div class="matrix-grid">
+                    <div class="matrix-cell matrix-cell-tp">
+                      <span id="cell-tp" class="matrix-num">0</span>
+                      <span class="matrix-label">TP</span>
+                    </div>
+                    <div class="matrix-cell matrix-cell-fn">
+                      <span id="cell-fn" class="matrix-num">0</span>
+                      <span class="matrix-label">FN</span>
+                    </div>
+                    <div class="matrix-cell matrix-cell-fp">
+                      <span id="cell-fp" class="matrix-num">0</span>
+                      <span class="matrix-label">FP</span>
+                    </div>
+                    <div class="matrix-cell matrix-cell-tn">
+                      <span id="cell-tn" class="matrix-num">0</span>
+                      <span class="matrix-label">TN</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="card-title" style="font-size: 1.1rem; margin-bottom: 8px;">Test Performance</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span class="text-secondary">Precision:</span>
+                    <strong id="lbl-precision">0.00</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span class="text-secondary">Recall (Sens.):</span>
+                    <strong id="lbl-recall">0.00</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span class="text-secondary">F1-Score:</span>
+                    <strong id="lbl-f1">0.00</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 8px;">
+                    <span class="text-secondary">Test Accuracy:</span>
+                    <strong id="lbl-test-accuracy" class="color-teal">0.0%</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Dataset Inspector & Terminal Console -->
+        <div class="grid-2-col" style="margin-top: 28px;">
+          <!-- Dataset Inspector -->
+          <div class="glass-card">
+            <div class="card-title">
+              <span>Local Training Dataset</span>
+              <span id="lbl-dataset-size" class="badge badge-real">40 Samples</span>
+            </div>
+            
+            <div class="dataset-table-container">
+              <table class="dataset-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Snippet</th>
+                  </tr>
+                </thead>
+                <tbody id="table-dataset-body">
+                  <!-- JS injected data -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Add new snippet -->
+            <div class="add-sample-form">
+              <h4>Add Labeled Sample to Corpus</h4>
+              <div class="form-row">
+                <input type="text" id="input-new-sample" class="input-text" placeholder="Enter headline or article snippet...">
+                <select id="select-new-label" class="select-label">
+                  <option value="real">Real News</option>
+                  <option value="fake">Fake News</option>
+                </select>
+              </div>
+              <button id="btn-add-sample" class="btn-secondary" style="width: fit-content; align-self: flex-end;">Add Sample</button>
+            </div>
+          </div>
+
+          <!-- Console log output -->
+          <div class="glass-card">
+            <div class="card-title">Training Process Log Console</div>
+            <div id="console-logs" class="console-log">
+              <div class="console-line console-line-header">=== FAKE NEWS SHIELD SHELL SYSTEM v1.0 ===</div>
+              <div class="console-line">Ready for instruction. Select parameters and click 'Execute Training Cycle' to compile models.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 3: QUIZ VIEW -->
+      <section id="panel-quiz" class="view-panel">
+        <div class="view-header">
+          <h2>Spot the Fake News Challenge</h2>
+          <p>Put your news assessment skills to the test. Examine the headlines below and determine if they represent reliable reporting or misleading fabrication.</p>
+        </div>
+        
+        <div class="quiz-wrapper">
+          <!-- Progress bar -->
+          <div style="width: 100%; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary);">
+            <span id="lbl-quiz-progress">Question 1 of 8</span>
+            <span id="lbl-quiz-score">Score: 0 / 0</span>
+          </div>
+          <div class="quiz-progress-bar">
+            <div id="bar-quiz-progress" class="quiz-progress-fill"></div>
+          </div>
+
+          <!-- Game Card Area -->
+          <div id="container-quiz-game">
+            <div class="quiz-card-container">
+              <div id="card-quiz" class="quiz-card">
+                
+                <!-- FRONT OF CARD (Question) -->
+                <div class="quiz-card-face quiz-card-front">
+                  <div class="quiz-card-header">
+                    <span class="quiz-badge">Headline Assessment</span>
+                    <span id="quiz-source" class="quiz-source-tag">Source: Online Blog</span>
+                  </div>
+                  <p id="quiz-headline" class="quiz-headline">Loading headline text...</p>
+                  <div class="quiz-options">
+                    <button id="btn-quiz-real" class="btn-quiz-option btn-quiz-option-real">Verified Factual</button>
+                    <button id="btn-quiz-fake" class="btn-quiz-option btn-quiz-option-fake">Fabricated / Fake</button>
+                  </div>
+                </div>
+
+                <!-- BACK OF CARD (Explanation) -->
+                <div class="quiz-card-face quiz-card-back">
+                  <div class="quiz-card-header">
+                    <span class="quiz-badge">Classification Feedback</span>
+                    <span id="quiz-actual-verdict" class="badge badge-real">Verified</span>
+                  </div>
+                  <h3 id="quiz-verdict-title" class="quiz-back-title correct">Correct!</h3>
+                  <div id="quiz-explanation" class="quiz-explanation">Loading explanation details...</div>
+                  <div class="quiz-next-actions">
+                    <button id="btn-quiz-next" class="btn-primary">
+                      Next Headline
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Screen (Hidden initially) -->
+          <div id="container-quiz-summary" class="glass-card quiz-summary-card" style="display: none; width: 100%;">
+            <span class="quiz-badge" style="font-size: 1rem;">Challenge Completed</span>
+            <h3 style="font-family: var(--font-display); font-size: 2rem;">Assessment Summary</h3>
+            <div class="summary-score-wheel">
+              <span id="lbl-summary-score" class="summary-score-text">6 / 8</span>
+            </div>
+            <p id="lbl-summary-feedback" class="text-secondary" style="margin-bottom: 10px;">Excellent! You have a sharp eye for spotting misinformation indicators.</p>
+            <button id="btn-quiz-restart" class="btn-primary">Test Yourself Again</button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- VIEW 4: LEARNING CENTER -->
+      <section id="panel-learn" class="view-panel">
+        <div class="view-header">
+          <h2>Classifier Learning Center</h2>
+          <p>Explore the concepts and math supporting text preprocessing and machine learning text classification.</p>
+        </div>
+        
+        <div class="glass-card">
+          <div class="learn-accordion">
+            
+            <div class="accordion-item" id="learn-item-1">
+              <button class="accordion-trigger">
+                <span>1. Text Preprocessing & Feature Extraction</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="accordion-content">
+                <p>Before text can be classified by machine learning models, it must be normalized and converted into numerical vectors. This follows a structured natural language processing pipeline:</p>
+                <div class="learn-subgrid">
+                  <div>
+                    <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+                      <li><strong>Tokenization:</strong> Breaking the raw text string into individual words while stripping special characters and converting to lowercase.</li>
+                      <li><strong>Stopword Filtering:</strong> Removing extremely common words (e.g., 'and', 'the', 'of') that carry little conceptual context. This reduces vocabulary size.</li>
+                      <li><strong>Stemming:</strong> Reducing words to their base roots (e.g., 'arguing', 'argues', 'argued' all simplify to 'argu'). This groups variations of a word together.</li>
+                    </ul>
+                  </div>
+                  <div class="formula-block">
+                    // NLP Preprocessor Pipeline Example
+                    Input: "SHOCKING: Doctors Can't Believe..."
+                    1. Tokenize -> ["shocking", "doctors", "can't", "believe"]
+                    2. Clean -> ["shocking", "doctors", "believe"] (remove stopwords)
+                    3. Stem -> ["shock", "doctor", "believ"]
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" id="learn-item-2">
+              <button class="accordion-trigger">
+                <span>2. Term Frequency-Inverse Document Frequency (TF-IDF)</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="accordion-content">
+                <p>TF-IDF measures how important a term is to a document relative to a corpus of documents. It combines two core metrics:</p>
+                <div class="learn-subgrid">
+                  <div>
+                    <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+                      <li><strong>Term Frequency (TF):</strong> The relative rate of the term in the document. Calculated as count of word divided by total words in that document.</li>
+                      <li><strong>Inverse Document Frequency (IDF):</strong> Measures how rare a word is in the entire training corpus. Rare words get higher weight; common words like "said" get downweighted.</li>
+                      <li><strong>TF-IDF Weight:</strong> Found by multiplying TF by IDF. The resulting vector represents the document's numerical footprint.</li>
+                    </ul>
+                  </div>
+                  <div class="formula-block">
+                    TF(t, d) = Count(t in d) / Total Words in d
+                    IDF(t) = log(1 + (Total Docs / (1 + Docs Containing t)))
+                    
+                    Weight(t, d) = TF(t, d) * IDF(t)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" id="learn-item-3">
+              <button class="accordion-trigger">
+                <span>3. Multinomial Naive Bayes Classification</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="accordion-content">
+                <p>Naive Bayes uses Bayes' Theorem to predict classification labels based on the conditional probabilities of tokens. The "naive" assumption is that words appear independently of each other given the class.</p>
+                <div class="learn-subgrid">
+                  <div>
+                    <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+                      <li><strong>Prior Probability:</strong> The general probability of seeing a class before reading any words (e.g. 50% Real / 50% Fake).</li>
+                      <li><strong>Word Likelihood:</strong> The probability of a word appearing in articles of a specific class: $P(\text{Word} \mid \text{Class})$.</li>
+                      <li><strong>Laplace Smoothing:</strong> Adding 1 to all word counts so that words unseen in training don't force a zero probability result.</li>
+                    </ul>
+                  </div>
+                  <div class="formula-block">
+                    Bayes Prediction Formula:
+                    P(Class | Document) ∝ P(Class) * ∏ P(Word_i | Class)
+                    
+                    Laplace Word Likelihood:
+                    P(Word | Class) = (Count(Word in Class) + 1) / 
+                                      (Total Words in Class + Vocab Size)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" id="learn-item-4">
+              <button class="accordion-trigger">
+                <span>4. Logistic Regression with Stochastic Gradient Descent (SGD)</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="accordion-content">
+                <p>Logistic Regression computes a weighted linear combination of TF-IDF feature weights, and squashes the outcome between 0 and 1 using the Sigmoid activation function to denote real/fake probability.</p>
+                <div class="learn-subgrid">
+                  <div>
+                    <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+                      <li><strong>Weights (coefficients):</strong> Each word has a weight. Positively associated words pull the prediction toward "Real News" (label 1), while clickbait/sensationalist words have negative weights pulling it toward "Fake News" (label 0).</li>
+                      <li><strong>SGD Optimization:</strong> The model starts with zero weights and iterates through the training set, adjusting weights step-by-step to minimize classification errors.</li>
+                    </ul>
+                  </div>
+                  <div class="formula-block">
+                    Activation: P(y=1|x) = Sigmoid(∑ w_i * x_i + bias)
+                    Sigmoid(z) = 1 / (1 + e^-z)
+                    
+                    SGD Weight Update Rule:
+                    w_i ← w_i - alpha * ((Prediction - Target) * x_i + lambda * w_i)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" id="learn-item-5">
+              <button class="accordion-trigger">
+                <span>5. Passive Aggressive Classifier (PAC)</span>
+                <svg class="accordion-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div class="accordion-content">
+                <p>The Passive Aggressive Classifier is an online learning algorithm ideal for text classification. It remains passive if the prediction is correct and confident, but aggressive if incorrect, updating weights directly to correct the error.</p>
+                <div class="learn-subgrid">
+                  <div>
+                    <ul style="padding-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+                      <li><strong>Passive Phase:</strong> If a sample prediction matches the label and has a margin score of at least 1, the classifier updates nothing (weights remain identical).</li>
+                      <li><strong>Aggressive Phase:</strong> If there's an error or narrow margin, weights are updated by a step size $\tau$ to correct the model instantly.</li>
+                      <li><strong>Regularization:</strong> Aggressiveness parameter $C$ keeps weight adjustments bounded, preventing outliers from destabilizing the model.</li>
+                    </ul>
+                  </div>
+                  <div class="formula-block">
+                    Hinge Loss: L = max(0, 1 - Target_y * WeightDotInput)
+                    Update Step: tau = Loss / (||InputVector||^2 + 1/(2*C))
+                    
+                    Weight Update Rule:
+                    w ← w + tau * Target_y * InputVector
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+      
+    </main>
+  </div>
+
+  <!-- LOAD APPLICATION MODULES -->
+  <script src="nlp.js"></script>
+  <script src="models.js"></script>
+  <script src="quiz.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
